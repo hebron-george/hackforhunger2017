@@ -1,3 +1,5 @@
+import json
+
 event =  {
     "trigger": "message:appUser",
     "app": {
@@ -23,7 +25,7 @@ event =  {
         "signedUpAt": "2015-10-06T03:38:02.346Z",
         "clients": [
           {
-            "active": true,
+            "active": True,
             "appVersion": "1.0",
             "id": "5A7F8343-DF41-46A8-96EC-8583FCB422FB",
             "lastSeen": "2016-03-09T19:09:01.431Z",
@@ -40,19 +42,47 @@ event =  {
     }
 }
 
+def lambda_handler(event, context):
+    # TODO implement
+    timestamp = event['messages'][0]['received']
+    respondent_id = event['messages'][0]['authorId']
+    device_type = event['appUser']['clients'][0]['info']
+    raw_response = event['messages'][0]['text']
 
-response_payload =
-{
-  "timestamp": <unix timestamp>,
+    response_payload = {
+        "timestamp": timestamp,
+        "session_id": "",
+        "respondent": 
+        {
+            "respondent_id": respondent_id,
+            "location": "",
+            "location_type": "",
+            "language": "",
+            "device_type": device_type
+        },
+        "raw_response": raw_response,
+        "question":
+        {
+            "question_id": "",
+            "question_text": "",
+            "metrics": []
+        }
+    }
+
+    print json.dumps(response_payload, indent=4)
+
+'''
+response_payload = {
+  "timestamp": <unix timestamp>, # good
   "session_id": <session id>,
   "respondent": {
-    "respondent_id": <id string>,
-    "location": <location string>,
+    "respondent_id": <id string>, # good
+    "location": <location string>, 
     "location_type": <location type>,
     "language": <language if known>,
-    "device_type": <device type if known>
+    "device_type": <device type if known> # good
   },
-  "raw_response": <response string (optional)>,
+  "raw_response": <response string (optional)>, # good
   "question": {
     "question_id": <question id>,
     "question_text": <question text>,
@@ -65,11 +95,7 @@ response_payload =
   }
 }
 
-def lambda_handler(event, context):
-    # TODO implement
-    return event
-
-
+'''
 
 
 lambda_handler(event, None)
